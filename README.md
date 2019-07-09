@@ -27,7 +27,7 @@ https://github.com/Landoop/kafka-topics-ui
 Dockerfile for [Apache Kafka](http://kafka.apache.org/)
 
 The image is available directly from [Docker Hub](https://hub.docker.com/r/wurstmeister/kafka/)
----
+
 
 ##### Pre-Requisites
 
@@ -38,7 +38,7 @@ The image is available directly from [Docker Hub](https://hub.docker.com/r/wurst
 
 **NOTE:** There are several 'gotchas' with configuring networking. If you are not sure about what the requirements are, please check out the [Connectivity Guide](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity) in the [Wiki](https://github.com/wurstmeister/kafka-docker/wiki)
 
-#### Usage
+##### Usage
 
 Start a cluster:
 
@@ -52,13 +52,13 @@ Destroy a cluster:
 
 - ```docker-compose stop```
 
-## Note
+##### Note
 
 The default ```docker-compose.yml``` should be seen as a starting point. By default each broker will get a new port number and broker id on restart. Depending on your use case this might not be desirable. If you need to use specific ports and broker ids, modify the docker-compose configuration accordingly, e.g. [docker-compose-single-broker.yml](https://github.com/wurstmeister/kafka-docker/blob/master/docker-compose-single-broker.yml):
 
 - ```docker-compose -f docker-compose-single-broker.yml up```
 
-## Broker IDs
+##### Broker IDs
 
 You can configure the broker id in different ways
 
@@ -68,7 +68,7 @@ You can configure the broker id in different ways
 If you don't specify a broker id in your docker-compose file, it will automatically be generated (see [https://issues.apache.org/jira/browse/KAFKA-1070](https://issues.apache.org/jira/browse/KAFKA-1070). This allows scaling up and down. In this case it is recommended to use the ```--no-recreate``` option of docker-compose to ensure that containers are not re-created and thus keep their names and ids.
 
 
-## Automatically create topics
+##### Automatically create topics
 
 If you want to have kafka-docker automatically create topics in Kafka during
 creation, a ```KAFKA_CREATE_TOPICS``` environment variable can be
@@ -85,7 +85,7 @@ If you wish to use multi-line YAML or some other delimiter between your topic de
 
 For example, `KAFKA_CREATE_TOPICS_SEPARATOR: "$$'\n'"` would use a newline to split the topic definitions. Syntax has to follow docker-compose escaping rules, and [ANSI-C](https://www.gnu.org/software/bash/manual/html_node/ANSI_002dC-Quoting.html) quoting.
 
-## Advertised hostname
+##### Advertised hostname
 
 You can configure the advertised hostname in different ways
 
@@ -102,7 +102,7 @@ HOSTNAME_COMMAND=wget -t3 -T2 -qO-  http://169.254.169.254/latest/meta-data/loca
 ```
 Reference: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
 
-### Injecting HOSTNAME_COMMAND into configuration
+##### Injecting HOSTNAME_COMMAND into configuration
 
 If you require the value of `HOSTNAME_COMMAND` in any of your other `KAFKA_XXX` variables, use the `_{HOSTNAME_COMMAND}` string in your variable value, i.e.
 
@@ -110,7 +110,7 @@ If you require the value of `HOSTNAME_COMMAND` in any of your other `KAFKA_XXX` 
 KAFKA_ADVERTISED_LISTENERS=SSL://_{HOSTNAME_COMMAND}:9093,PLAINTEXT://9092
 ```
 
-## Advertised port
+##### Advertised port
 
 If the required advertised port is not static, it may be necessary to determine this programatically. This can be done with the `PORT_COMMAND` environment variable.
 
@@ -124,7 +124,7 @@ This can be then interpolated in any other `KAFKA_XXX` config using the `_{PORT_
 KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://1.2.3.4:_{PORT_COMMAND}
 ```
 
-## Listener Configuration
+##### Listener Configuration
 
 It may be useful to have the [Kafka Documentation](https://kafka.apache.org/documentation/) open, to understand the various broker listener configuration options.
 
@@ -132,7 +132,7 @@ Since 0.9.0, Kafka has supported [multiple listener configurations](https://issu
 
 **NOTE:** ```advertised.host.name``` and ```advertised.port``` still work as expected, but should not be used if configuring the listeners.
 
-### Example
+##### Example
 
 The example environment below:
 
@@ -152,12 +152,12 @@ listeners = OUTSIDE://:9094,INSIDE://:9092
 inter.broker.listener.name = INSIDE
 ```
 
-### Rules
+##### Rules
 
 * No listeners may share a port number.
 * An advertised.listener must be present by protocol name and port number in the list of listeners.
 
-## Broker Rack
+##### Broker Rack
 
 You can configure the broker rack affinity in different ways
 
@@ -166,7 +166,7 @@ You can configure the broker rack affinity in different ways
 
 In the above example the AWS metadata service is used to put the instance's availability zone in the ```broker.rack``` property.
 
-## JMX
+##### JMX
 
 For monitoring purposes you may wish to configure JMX. Additional to the standard JMX parameters, problems could arise from the underlying RMI protocol used to connect
 
@@ -180,31 +180,7 @@ For example, to connect to a kafka running locally (assumes exposing port 1099)
 
 Jconsole can now connect at ```jconsole 192.168.99.100:1099```
 
-## Docker Swarm Mode
 
-The listener configuration above is necessary when deploying Kafka in a Docker Swarm using an overlay network. By separating OUTSIDE and INSIDE listeners, a host can communicate with clients outside the overlay network while still benefiting from it from within the swarm.
-
-In addition to the multiple-listener configuration, additional best practices for operating Kafka in a Docker Swarm include:
-
-* Use "deploy: global" in a compose file to launch one and only one Kafka broker per swarm node.
-* Use compose file version '3.2' (minimum Docker version 16.04) and the "long" port definition with the port in "host" mode instead of the default "ingress" load-balanced port binding. This ensures that outside requests are always routed to the correct broker. For example:
-
-```
-ports:
-   - target: 9094
-     published: 9094
-     protocol: tcp
-     mode: host
-```
-
-Older compose files using the short-version of port mapping may encounter Kafka client issues if their connection to individual brokers cannot be guaranteed.
-
-See the included sample compose file ```docker-compose-swarm.yml```
-
-## Release process
-
-See the [wiki](https://github.com/wurstmeister/kafka-docker/wiki/ReleaseProcess) for information on adding or updating versions to release to Dockerhub.
-
-## Tutorial
+##### Tutorial
 
 [http://wurstmeister.github.io/kafka-docker/](http://wurstmeister.github.io/kafka-docker/)
