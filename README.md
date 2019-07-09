@@ -9,6 +9,10 @@ Make sure you have https://docs.docker.com/compose/ set up on your machine.
 
 Run `docker-compose up`.
 
+### Viewing Redis Status
+If you do not have redis-cli, run `brew install redis`.
+After Redis has launched, run `redis-cli ping`. You should get a response of PONG.
+
 ### Viewing Kafka Status
 After logs are finished and services are up, navigate to http://localhost:8000 for a UI view of current Kafka brokers and topics.
 
