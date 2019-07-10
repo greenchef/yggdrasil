@@ -24,6 +24,9 @@ https://redis.io/topics/rediscli
 
 ### Apache Kafka
 
+#### General Kafka + Docker reading
+https://jaceklaskowski.gitbooks.io/apache-kafka/kafka-docker.html
+
 #### confluent/kafka-rest
 https://docs.confluent.io/current/kafka-rest/quickstart.html#produce-and-consume-json-messages
 
