@@ -1,0 +1,17 @@
+{
+  "name": "yggdrasil",
+  "version": "1.0.0",
+  "description": "A service to helps us connect all of our services together. At least, locally.",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker-compose up",
+    "stop": "docker-compose stop",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenchef/yggdrasil.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
