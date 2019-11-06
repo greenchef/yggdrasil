@@ -1,6 +1,8 @@
 version: '2'
 volumes:
   data:
+  rabbitmq_data:
+    driver: local
 services:
   redis:
     image: redis
@@ -53,3 +55,12 @@ services:
     image: landoop/kafka-topics-ui
     ports:
       - "8000:8000"
+  rabbitmq:
+    image: 'bitnami/rabbitmq:3.8'
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - 'rabbitmq_data:/bitnami'
